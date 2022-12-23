@@ -1,1 +1,1 @@
-web: gunicorn homework.wsgi
+web: gunicorn homework.wsgi --log-file
