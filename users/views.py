@@ -35,7 +35,7 @@ def register_user(request):
             password=form.cleaned_data['password1']
             user=authenticate(username=username, password=password)
             login(request,user)
-            messages.success(request, ('registration successful'))
+            # messages.success(request, ('registration successful'))
             return redirect('index')
     else:
         form=RegisterUserForm()
