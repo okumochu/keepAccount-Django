@@ -1,0 +1,21 @@
+{% extends "keepAccount/base.html" %}
+{% block body %}
+
+{% if form.errors %}<div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <p>there is an error with your format</p>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+<div class="shadow p-4 mb-5 bg-body rounded" style="padding: 300px,300px">
+    <h1>Register</h1>
+
+    <br />
+
+    <form action="{% url 'register' %}" method="POST">
+        {%csrf_token%}
+        {{form.as_p}}
+        <br>
+        <input type='submit'>
+    </form>
+</div>
+{% endblock %}

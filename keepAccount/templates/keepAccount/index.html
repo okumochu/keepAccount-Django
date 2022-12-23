@@ -1,0 +1,15 @@
+{% extends "keepAccount/base.html" %}
+{% block body %}
+
+<h1>Keep Account</h1>
+
+{% if user.is_authenticated %}
+Login User: {{user}}
+<br>
+<a href="{%url 'logout'%}">logout</a>
+{% else %}
+<h1>You Must Log In First</h1>
+<a href="{%url 'login'%}">Log In Here</a>
+{% endif %}
+
+{% endblock %}

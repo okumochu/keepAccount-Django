@@ -1,0 +1,37 @@
+{% extends "keepAccount/base.html" %}
+{% block body %}
+
+<h1>login</h1>
+<br />
+
+{% if messages %}
+{% for i in messages %}
+
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+    {{i}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
+{% endif %}
+
+<br />
+
+<form action="{% url 'login' %}" method="POST">
+    {%csrf_token%}
+
+    <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">User Name</label>
+        <input type="text" class="form-control" name="username" aria-describedby="emailHelp">
+
+    </div>
+    <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">Password</label>
+        <input type="password" class="form-control" name="password">
+    </div>
+
+    <input type='submit'>
+</form>
+
+<a href="{% url 'register' %}">Register</a>
+
+{% endblock %}
