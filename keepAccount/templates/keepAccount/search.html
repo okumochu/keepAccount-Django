@@ -23,13 +23,15 @@ Login User: {{user}}
             </tr>
         </thead>
         <tbody>
-            {% for list in result %}
+            {% for list in costList%}
             <tr>
-                <th scope="row">1</th>
                 <td>{{list.date}}</td>
                 <td>{{list.type}}</td>
                 <td>{{list.description}}</td>
                 <td>{{list.cost}}</td>
+                <td><a href="{% url 'update' list.id %}" class="btn btn-outline-secondary btn-sm">update</a>
+                    <a href="{%url 'delete' list.id%}" class="btn btn-outline-danger btn-sm">delete</a>
+                </td>
             </tr>
             {% endfor %}
         </tbody>

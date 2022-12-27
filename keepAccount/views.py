@@ -55,7 +55,8 @@ def graph(request):
     for types in ['食','衣','住','行','育','樂','其他']:
         sum=0
         for add in account.objects.filter(type=types):
-            sum+=add.cost
+            if add.user==request.user:
+                 sum+=add.cost
         typeSum.append(sum)
 
         
