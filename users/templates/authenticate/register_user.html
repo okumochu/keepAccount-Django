@@ -1,4 +1,4 @@
-{% extends "keepAccount/base.html" %}
+{% extends "authenticate/userLayout.html" %}
 {% block body %}
 
 {% if form.errors %}<div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -6,7 +6,11 @@
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 {% endif %}
-<div class="shadow p-4 mb-5 bg-body rounded" style="padding: 300px,300px">
+<br />
+<br />
+<br />
+
+<div class="container shadow p-4 mb-5 bg-body rounded">
     <h1>Register</h1>
 
     <br />
@@ -18,4 +22,5 @@
         <input type='submit'>
     </form>
 </div>
+
 {% endblock %}

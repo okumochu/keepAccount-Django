@@ -5,33 +5,44 @@
 <br>
 Login User: {{user}}
 
-<br>
 
+{% if searched %}
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+    Your searched for {{searched}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
 <div class="container">
     <table class="table">
         <thead>
             <tr>
+                <th scope="col">#</th>
                 <th scope="col">Date</th>
                 <th scope="col">Type</th>
                 <th scope="col">Description</th>
                 <th scope="col">Cost</th>
-                <th scope="col"></th>
             </tr>
         </thead>
         <tbody>
-            {% for list in costList%}
+            {% for list in result %}
             <tr>
+                <th scope="row">1</th>
                 <td>{{list.date}}</td>
                 <td>{{list.type}}</td>
                 <td>{{list.description}}</td>
                 <td>{{list.cost}}</td>
-                <td><a href="{% url 'update' list.id %}" class="btn btn-outline-secondary btn-sm">update</a>
-                    <a href="{%url 'delete' list.id%}" class="btn btn-outline-danger btn-sm">delete</a>
-                </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
+
+{% else %}
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+    Your forget to type
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+
+
 
 {% endblock %}

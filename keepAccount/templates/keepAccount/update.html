@@ -1,0 +1,20 @@
+{% extends "keepAccount/base.html" %}
+{% block body %}
+
+
+<br>
+Login User: {{user}}
+
+<h3>Update</h3>
+<br>
+<div class="container">
+    <form action="" method="POST">
+        {%csrf_token%}
+        {{form.as_p}}
+        <br>
+        <input type="submit" value='update' class="btn btn-secondary">
+    </form>
+</div>
+
+
+{% endblock %}
