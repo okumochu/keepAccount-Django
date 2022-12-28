@@ -2,9 +2,9 @@
 {% block body %}
 
 
-<br>
 Login User: {{user}}
 
+<br>
 <br>
 
 <div class="container">
@@ -24,7 +24,15 @@ Login User: {{user}}
                 <td>{{list.date}}</td>
                 <td>{{list.type}}</td>
                 <td>{{list.description}}</td>
-                <td>{{list.cost}}</td>
+                {% if list.type == '收入' %}
+                <td>
+                    <p style="color:rgb(4, 210, 4)">{{list.cost}}</p>
+                </td>
+                {% else %}
+                <td>
+                    <p style="color:rgb(255, 0, 0)">{{list.cost}}</p>
+                </td>
+                {% endif %}
                 <td><a href="{% url 'update' list.id %}" class="btn btn-outline-secondary btn-sm">update</a>
                     <a href="{%url 'delete' list.id%}" class="btn btn-outline-danger btn-sm">delete</a>
                 </td>

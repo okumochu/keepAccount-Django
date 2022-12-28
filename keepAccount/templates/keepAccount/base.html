@@ -41,13 +41,13 @@
                             data-bs-target="#exampleModal">
                             ADD
                         </button>
-                        <!-- Modal -->
+                        <!-- Modal-->
                         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                             aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel">Keep Account</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
@@ -65,28 +65,19 @@
                                 </div>
                             </div>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            DashBoard
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Overview</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="{% url 'graph' %}">Graph</a></li>
-                        </ul>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{%url 'overview'%}">DashBoard</a>
+                    </li>
+                    <li><a class="nav-link active" href="{% url 'graph' %}">Graph</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'generateCSV' %}">generate CSV</a>
                     </li>
                     <li class="nav-item">
                         {% if user.is_authenticated %}
-                        <a class="nav-link active" aria-current="page" href="{%url 'logout'%}">Logout</a>
+                        <a class="btn btn-outline-danger" href="{%url 'logout'%}">Logout</a>
                         {% else %}
-                        <a class="nav-link active" aria-current="page" href="{%url 'login'%}">Log In Here</a>
+                        <a class="btn btn-outline-danger" href="{%url 'login'%}">Log In Here</a>
                         {% endif %}
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled">Disabled</a>
                     </li>
                 </ul>
                 <form class="d-flex" role="search" action="{% url 'search'%}" method="POST">

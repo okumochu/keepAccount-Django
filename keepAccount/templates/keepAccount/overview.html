@@ -1,9 +1,28 @@
 {% extends "keepAccount/base.html" %}
 {% block body %}
 
-
-<br>
 Login User: {{user}}
+<br>
+
+<center>
+    <h4>choose a month</h4>
+</center>
+
+<div class="container">
+    <form class="d-flex" role="search" action="{% url 'overview'%}" method="POST">
+        {%csrf_token%}
+        <input class="form-control me-2" type="month" placeholder="choose a month" aria-label="Search" name="searched">
+        <button class="btn btn-outline-success" type="submit">GO</button>
+    </form>
+</div>
+
+
+{% if searched %}
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+    Your searched for {{searched}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -110,13 +129,65 @@ Login User: {{user}}
 
     <br>
     <br>
-    <br>
 
 
     <!-- end of static icon -->
 </div>
 </div>
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            Balance : {{balance}}
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            Total Cost : {{totalCost}}
+        </div>
+    </div>
+</div>
 
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Date</th>
+                <th scope="col">Type</th>
+                <th scope="col">Description</th>
+                <th scope="col">Cost</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for list in result%}
+            {% if list.user == user %}
+            <tr>
+                <td>{{list.date}}</td>
+                <td>{{list.type}}</td>
+                <td>{{list.description}}</td>
+                {% if list.type == '收入' %}
+                <td>
+                    <p style="color:rgb(2, 255, 2)">{{list.cost}}</p>
+                </td>
+                {% else %}
+                <td>
+                    <p style="color:rgb(255, 0, 0)">{{list.cost}}</p>
+                </td>
+                {% endif %}
+                <td><a href="{% url 'update' list.id %}" class="btn btn-outline-secondary btn-sm">update</a>
+                    <a href="{%url 'delete' list.id%}" class="btn btn-outline-danger btn-sm">delete</a>
+                </td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 
-
+{% else %}
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+    Choose a month
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
 {% endblock %}
