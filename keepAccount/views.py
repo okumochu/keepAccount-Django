@@ -146,9 +146,9 @@ def overview(request):
 
         totalCost=typeSum[0]+typeSum[1]+typeSum[2]+typeSum[3]+typeSum[4]+ typeSum[5]+typeSum[7]
         balance=typeSum[6]-totalCost  
-        item=assets.objects.get(user=request.user)
-        quotas=int(item.expectedCost)-int(totalCost)
         if assets.objects.filter(user=request.user).exists():
+            item=assets.objects.get(user=request.user)
+            quotas=int(item.expectedCost)-int(totalCost)
             items=assets.objects.get(user=request.user)
             return render(request,'keepAccount/overview.html',{
                 'searched':searched,
