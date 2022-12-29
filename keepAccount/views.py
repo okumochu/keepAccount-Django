@@ -13,12 +13,12 @@ def index(request):
         if form.is_valid():
             #update asset
             if assets.objects.filter(user=request.user).exists():
-                item=assets.objects.get(user=request.user)
+                items=assets.objects.get(user=request.user)
                 if form.cleaned_data['type']=='收入':
-                    item.asset+=form.cleaned_data['cost']
+                    items.asset+=form.cleaned_data['cost']
                 else:
-                    item.asset-=form.cleaned_data['cost']
-                item.save()
+                    items.asset-=form.cleaned_data['cost']
+                items.save()
 
             add=form.save(commit=False)
             add.user=request.user
@@ -39,15 +39,22 @@ def index(request):
 def update(request,id):
     item=account.objects.get(pk=id)
     form=editForm(request.POST or None, instance=item)
+    temp=item.cost
     if form.is_valid():
             #update asset
             if assets.objects.filter(user=request.user).exists():
-                item=assets.objects.get(user=request.user)
+                items=assets.objects.get(user=request.user)
                 if form.cleaned_data['type']=='收入':
-                    item.asset+=form.cleaned_data['cost']
+                    if temp>form.cleaned_data['cost']:
+                        items.asset-=abs(temp-form.cleaned_data['cost'])
+                    else:
+                        items.asset+=abs(temp-form.cleaned_data['cost'])
                 else:
-                    item.asset-=form.cleaned_data['cost']
-                item.save()
+                    if temp>form.cleaned_data['cost']:
+                        items.asset+=abs(temp-form.cleaned_data['cost'])
+                    else:
+                        items.asset-=abs(temp-form.cleaned_data['cost'])
+                items.save()
             add=form.save(commit=False)
             add.user=request.user
             add.save()
