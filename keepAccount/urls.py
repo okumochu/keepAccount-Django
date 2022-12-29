@@ -9,4 +9,5 @@ urlpatterns = [
     path('graph',views.graph,name='graph'),
     path('generateCSV',views.generateCSV,name='generateCSV'),
     path('overview',views.overview,name='overview'),
+    path('asset',views.asset,name='asset')
 ]

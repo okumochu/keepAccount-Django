@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import account
+from .models import account,assets
 from django import forms
 
 class DateInput(forms.DateInput):
@@ -19,8 +19,18 @@ class editForm(ModelForm):
         self.fields['description'].widget.attrs['class']='form-control'
         self.fields['cost'].widget.attrs['class']='form-control' 
 
-        
-#widgets={ 'date' ,            'type',            'description',            'cost'        }
+class assetForm(ModelForm):
+    class Meta:
+        model=assets
+        fields=('asset','expectedCost')
+
+    def __init__(self, *args, **kwargs):
+        super(assetForm,self).__init__(*args, **kwargs)
+        self.fields['asset'].widget.attrs['class']='form-control'
+        self.fields['expectedCost'].widget.attrs['class']='form-control'
+
+
+    
 
 
 

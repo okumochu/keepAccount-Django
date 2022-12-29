@@ -26,3 +26,11 @@ class account(models.Model):
     def __str__(self):
         return f'{self.user} spends {self.cost} on {self.type}  {self.description} at {self.date}' 
 
+class assets(models.Model):
+    user=models.OneToOneField(User,blank=True,null=True, on_delete=models.CASCADE)
+    asset=models.IntegerField(blank=True)
+    expectedCost=models.IntegerField(blank=True)
+
+    def __str__(self):
+        return f'{self.user} with asset{self.asset} and expectedCost{self.expectedCost} ' 
+

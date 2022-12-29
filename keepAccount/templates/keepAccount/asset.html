@@ -1,0 +1,15 @@
+{% extends "keepAccount/base.html" %}
+{% block body %}
+
+
+<h3>Edit Info</h3>
+<div class="container">
+    <form action="{% url 'asset' %}" method="POST">
+        {%csrf_token%}
+        {{form.as_p}}
+        <div class="modal-footer">
+            <input type="submit" value="update" class="btn btn-primary">
+        </div>
+    </form>
+</div>
+{% endblock %}

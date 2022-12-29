@@ -70,6 +70,9 @@
                     </li>
                     <li><a class="nav-link active" href="{% url 'graph' %}">Graph</a></li>
                     <li class="nav-item">
+                        <a class="nav-link" href="{% url 'asset' %}">Edit Info</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{% url 'generateCSV' %}">generate CSV</a>
                     </li>
                     <li class="nav-item">
@@ -89,6 +92,15 @@
             </div>
         </div>
     </nav>
+    Login User: {{user}}
+    <br>
+    <p style="color: blue;">
+        {% if items %}
+        Total Asset: {{items}}
+        {% endif %}
+    </p>
+
+    <br>
     {% block body %}
 
     {% endblock %}

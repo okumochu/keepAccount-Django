@@ -1,7 +1,7 @@
-from django.shortcuts import render
-from keepAccount.models import account
+from django.shortcuts import render,redirect
+from keepAccount.models import account,assets
 from django.contrib.auth.models import User
-from .forms import editForm
+from .forms import editForm,assetForm
 from django.http import HttpResponseRedirect,HttpResponse
 from django.urls import reverse
 import csv
@@ -11,35 +11,68 @@ def index(request):
     if request.method == 'POST':
         form=editForm(request.POST)
         if form.is_valid():
+            #update asset
+            if assets.objects.filter(user=request.user).exists():
+                item=assets.objects.get(user=request.user)
+                if form.cleaned_data['type']=='收入':
+                    item.asset+=form.cleaned_data['cost']
+                else:
+                    item.asset-=form.cleaned_data['cost']
+                item.save()
+
             add=form.save(commit=False)
             add.user=request.user
             add.save()
             return HttpResponseRedirect(reverse('index'))
+    if assets.objects.filter(user=request.user).exists():
+        items=assets.objects.get(user=request.user)
+        return render(request,'keepAccount/index.html',{
+            'editForm':editForm,
+            'costList':costList,
+            'items':items.asset
+        })
     return render(request,'keepAccount/index.html',{
-        'editForm':editForm,
-        'costList':costList,
-    })
+            'editForm':editForm,
+            'costList':costList,
+        })
 
 def update(request,id):
     item=account.objects.get(pk=id)
     form=editForm(request.POST or None, instance=item)
     if form.is_valid():
+            #update asset
+            if assets.objects.filter(user=request.user).exists():
+                item=assets.objects.get(user=request.user)
+                if form.cleaned_data['type']=='收入':
+                    item.asset+=form.cleaned_data['cost']
+                else:
+                    item.asset-=form.cleaned_data['cost']
+                item.save()
             add=form.save(commit=False)
             add.user=request.user
             add.save()
-            return HttpResponseRedirect(reverse('index'))
+            return HttpResponseRedirect(reverse('index'))   
+    if assets.objects.filter(user=request.user).exists():
+        items=assets.objects.get(user=request.user)
+        return render(request,'keepAccount/update.html',{
+            'editForm':editForm,
+            'item':item,
+            'form':form,
+            'items':items.asset
+            })
     return render(request,'keepAccount/update.html',{
-        'editForm':editForm,
-        'item':item,
-        'form':form
-    })
+            'editForm':editForm,
+            'item':item,
+            'form':form,
+
+            })
 
 
 def search(request):
     if request.method == 'POST':
         searched=request.POST['searched']
 
-        result=account.objects.filter(description__contains=searched)
+        result=account.objects.filter(description__contains=searched).order_by('-date','-cost')
         return render(request,'keepAccount/search.html',{
             'editForm':editForm,
             'searched':searched,
@@ -51,8 +84,16 @@ def search(request):
         })
 
 def delete(request,id):
-    item=account.objects.get(pk=id)
-    item.delete()
+    accounts=account.objects.get(pk=id)
+
+    if assets.objects.filter(user=request.user).exists():
+        item=assets.objects.get(user=request.user)
+        if accounts.type=='收入':
+            item.asset-=accounts.cost
+        else:
+            item.asset+=accounts.cost
+        item.save()
+    accounts.delete()
     return HttpResponseRedirect(reverse('index'))
 
 
@@ -64,11 +105,16 @@ def graph(request):
             if add.user==request.user:
                  sum+=add.cost
         typeSum.append(sum)
-
-        
+    if assets.objects.filter(user=request.user).exists():
+        items=assets.objects.get(user=request.user)
+        return render(request,'keepAccount/graph.html',{
+            'editForm':editForm,
+            'typeSum':typeSum,
+            'items':items.asset
+        })
     return render(request,'keepAccount/graph.html',{
         'editForm':editForm,
-        'typeSum':typeSum
+        'typeSum':typeSum,
     })
 
 def generateCSV(request):
@@ -89,7 +135,7 @@ def generateCSV(request):
 def overview(request):
     if request.method=='POST':
         searched=request.POST['searched']
-        result=account.objects.filter(date__contains=searched)
+        result=account.objects.filter(date__contains=searched).order_by('-date','-cost')
         typeSum=[0,0,0,0,0,0,0,0]
         for add in result:
             index=0
@@ -99,18 +145,77 @@ def overview(request):
                 index+=1     
 
         totalCost=typeSum[0]+typeSum[1]+typeSum[2]+typeSum[3]+typeSum[4]+ typeSum[5]+typeSum[7]
-        balance=typeSum[6]-totalCost    
-        return render(request,'keepAccount/overview.html',{
-            'searched':searched,
-            'typeSum':typeSum,
-            'result':result,
-            'editForm':editForm,
-            'user':request.user,
-            'totalCost':totalCost,
-            'balance':balance
-        })
+        balance=typeSum[6]-totalCost  
+        item=assets.objects.get(user=request.user)
+        quotas=int(item.expectedCost)-int(totalCost)
+        if assets.objects.filter(user=request.user).exists():
+            items=assets.objects.get(user=request.user)
+            return render(request,'keepAccount/overview.html',{
+                'searched':searched,
+                'typeSum':typeSum,
+                'result':result,
+                'editForm':editForm,
+                'user':request.user,
+                'totalCost':totalCost,
+                'balance':balance,
+                'quotas':quotas,
+                'items':items.asset
+             })
+        else:
+            return render(request,'keepAccount/overview.html',{
+                'searched':searched,
+                'typeSum':typeSum,
+                'result':result,
+                'editForm':editForm,
+                'user':request.user,
+                'totalCost':totalCost,
+                'balance':balance,
+                'quotas':quotas,
+             })
     else:
-        return render(request,'keepAccount/overview.html',{
+        if assets.objects.filter(user=request.user).exists():
+            items=assets.objects.get(user=request.user)
+            return render(request,'keepAccount/overview.html',{
+                'editForm':editForm,
+                'items':items.asset
+            })
+        else: return render(request,'keepAccount/overview.html',{
+                'editForm':editForm,
+            })
+        
+
+def asset(request):
+
+    if request.method=="POST":
+        if assets.objects.filter(user=request.user).exists():
+            item=assets.objects.get(user=request.user)
+            form=assetForm(request.POST or None, instance=item)
+            if form.is_valid():
+                    add=form.save(commit=False)
+                    add.user=request.user
+                    add.save()
+                    return HttpResponseRedirect(reverse('index'))          
+        else:
+            form=assetForm(request.POST)
+            if form.is_valid():
+                    add=form.save(commit=False)
+                    add.user=request.user
+                    add.save()
+                    return HttpResponseRedirect(reverse('index'))
+    else: 
+        if assets.objects.filter(user=request.user).exists():     
+            item=assets.objects.get(user=request.user)
+            form=assetForm(request.POST or None, instance=item) 
+            return render(request,'keepAccount/asset.html',{
+                'editForm':editForm,
+                'item':item,
+                'form':form,
+                'items':item.asset
+            })   
+        else:
+            return render(request,'keepAccount/asset.html',{
             'editForm':editForm,
-        })
+            'form':assetForm,
+            })
+           
     
