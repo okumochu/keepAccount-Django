@@ -71,8 +71,7 @@ def update(request,id):
 def search(request):
     if request.method == 'POST':
         searched=request.POST['searched']
-
-        result=account.objects.filter(description__contains=searched).order_by('-date','-cost')
+        result=account.objects.filter(description__contains=searched,user=request.user).order_by('-date','-cost')
         return render(request,'keepAccount/search.html',{
             'editForm':editForm,
             'searched':searched,
@@ -170,7 +169,6 @@ def overview(request):
                 'user':request.user,
                 'totalCost':totalCost,
                 'balance':balance,
-                'quotas':quotas,
              })
     else:
         if assets.objects.filter(user=request.user).exists():
