@@ -17,7 +17,7 @@
                     var myChart1 = new Chart(ctx, {
                         type: 'pie',
                         data: {
-                            labels: ['食', '衣', '住', '行', '育', '樂', '收入', '其他'],
+                            labels: ['Food', 'Clothing', 'Housing', 'Transportation', 'Education', 'Entertainment', 'Income', 'Other'],
                             datasets: [{
                                 label: 'Sum',
                                 data: JSON.parse("{{typeSum}}"),
@@ -63,7 +63,7 @@
                     var myChart = new Chart(ctx, {
                         type: 'bar',
                         data: {
-                            labels: ['食', '衣', '住', '行', '育', '樂', '收入', '其他'],
+                            labels: ['Food', 'Clothing', 'Housing', 'Transportation', 'Education', 'Entertainment', 'Income', 'Other'],
                             datasets: [{
                                 label: 'bar-chart',
                                 data: JSON.parse("{{typeSum}}"),

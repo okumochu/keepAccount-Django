@@ -21,7 +21,7 @@
             {% for list in costList%}
             <tr>
                 <td>{{list.date}}</td>
-                <td>{{list.type}}</td>
+                <td>{{list.get_type_display}}</td>
                 <td>{{list.description}}</td>
                 {% if list.type == '收入' %}
                 <td>

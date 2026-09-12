@@ -4,7 +4,7 @@
 
 {% if searched %}
 <div class="alert alert-warning alert-dismissible fade show" role="alert">
-    Your searched for {{searched}}
+    You searched for {{searched}}
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 <div class="container">
@@ -22,7 +22,7 @@
             {% for list in result%}
             <tr>
                 <td>{{list.date}}</td>
-                <td>{{list.type}}</td>
+                <td>{{list.get_type_display}}</td>
                 <td>{{list.description}}</td>
                 {% if list.type == '收入' %}
                 <td>
@@ -44,7 +44,7 @@
 
 {% else %}
 <div class="alert alert-warning alert-dismissible fade show" role="alert">
-    Your forget to type
+    Enter a search term.
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 {% endif %}

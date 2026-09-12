@@ -2,13 +2,13 @@
 {% block body %}
 
 <center>
-    <h4>choose a month</h4>
+    <h4>Choose a month</h4>
 </center>
 
 <div class="container">
     <form class="d-flex" role="search" action="{% url 'overview'%}" method="POST">
         {%csrf_token%}
-        <input class="form-control me-2" type="month" placeholder="choose a month" aria-label="Search" name="searched">
+        <input class="form-control me-2" type="month" placeholder="Choose a month" aria-label="Search" name="searched">
         <button class="btn btn-outline-success" type="submit">GO</button>
     </form>
 </div>
@@ -16,7 +16,7 @@
 
 {% if searched %}
 <div class="alert alert-warning alert-dismissible fade show" role="alert">
-    Your searched for {{searched}}
+    You searched for {{searched}}
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 
@@ -37,7 +37,7 @@
                     var myChart1 = new Chart(ctx, {
                         type: 'pie',
                         data: {
-                            labels: ['食', '衣', '住', '行', '育', '樂', '收入', '其他'],
+                            labels: ['Food', 'Clothing', 'Housing', 'Transportation', 'Education', 'Entertainment', 'Income', 'Other'],
                             datasets: [{
                                 label: 'Sum',
                                 data: JSON.parse("{{typeSum}}"),
@@ -83,7 +83,7 @@
                     var myChart = new Chart(ctx, {
                         type: 'bar',
                         data: {
-                            labels: ['食', '衣', '住', '行', '育', '樂', '收入', '其他'],
+                            labels: ['Food', 'Clothing', 'Housing', 'Transportation', 'Education', 'Entertainment', 'Income', 'Other'],
                             datasets: [{
                                 label: 'bar-chart',
                                 data: JSON.parse("{{typeSum}}"),
@@ -167,7 +167,7 @@
             {% if list.user == user %}
             <tr>
                 <td>{{list.date}}</td>
-                <td>{{list.type}}</td>
+                <td>{{list.get_type_display}}</td>
                 <td>{{list.description}}</td>
                 {% if list.type == '收入' %}
                 <td>

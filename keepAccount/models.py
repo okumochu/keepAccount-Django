@@ -1,17 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime
-# Create your models here.
+# Stored category values remain unchanged; labels are displayed in English.
 
 TYPE_CHOICES = (
-    ("食", "食"),
-    ("衣", "衣"),
-    ("住", "住"),
-    ("行", "行"),
-    ("育", "育"),
-    ("樂", "樂"),
-    ("收入","收入"),
-    ("其他", "其他")
+    ("食", "Food"),
+    ("衣", "Clothing"),
+    ("住", "Housing"),
+    ("行", "Transportation"),
+    ("育", "Education"),
+    ("樂", "Entertainment"),
+    ("收入", "Income"),
+    ("其他", "Other")
 )
 
 
@@ -24,7 +24,7 @@ class account(models.Model):
 
 
     def __str__(self):
-        return f'{self.user} spends {self.cost} on {self.type}  {self.description} at {self.date}' 
+        return f'{self.user} spends {self.cost} on {self.get_type_display()}  {self.description} at {self.date}' 
 
 class assets(models.Model):
     user=models.OneToOneField(User,blank=True,null=True, on_delete=models.CASCADE)
